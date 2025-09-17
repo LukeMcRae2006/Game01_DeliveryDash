@@ -71,6 +71,7 @@ public class Driver : MonoBehaviour
             moveAmount = move * moveSpeed * Time.deltaTime;
         }
 
+
         float steerAmount = steer * steerSpeed * moveSpeed * Time.deltaTime;
         transform.Translate(0, moveAmount, 0);
         if (moveSpeed > minSpeed)
