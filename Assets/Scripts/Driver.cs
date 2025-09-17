@@ -5,17 +5,30 @@ public class Driver : MonoBehaviour
 {
     [SerializeField] float steerSpeed = 0.5f;
     [SerializeField] float moveSpeed = 0f;
-    float maxSpeed = 80f;
-    float minSpeed = 10f;
-    float lastMovDir = 1;
+    [SerializeField] float regularSpeed = 5f;
+    [SerializeField] float boostSpeed = 10f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        moveSpeed = minSpeed;
+        moveSpeed = regularSpeed;
     }
 
     // Update is called once per frame
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Boost"))
+        {
+            moveSpeed = boostSpeed;
+            Destroy(collision.gameObject);
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        moveSpeed = regularSpeed;
+    }
     void Update()
     {
 
@@ -25,12 +38,12 @@ public class Driver : MonoBehaviour
         if (Keyboard.current.wKey.isPressed)
         {
             move = 1f;
-            lastMovDir = 1f;
+
         }
         else if (Keyboard.current.sKey.isPressed)
         {
             move = -1f;
-            lastMovDir = -1f;
+
         }
 
         if (Keyboard.current.aKey.isPressed)
@@ -43,41 +56,13 @@ public class Driver : MonoBehaviour
         }
 
 
-        if (move != 0)
-        {
-            if (moveSpeed < maxSpeed)
-            {
-                moveSpeed += Time.deltaTime * 15f;
-            }
-
-        }
-        else
-        {
-            if (moveSpeed > minSpeed)
-            {
-                moveSpeed -= Time.deltaTime * 30f;
-            }
-        }
-        float moveAmount;
 
 
-        if (moveSpeed > minSpeed && move == 0)
-        {
 
-            moveAmount = moveSpeed * lastMovDir * Time.deltaTime;
-        }
-        else
-        {
-            moveAmount = move * moveSpeed * Time.deltaTime;
-        }
+        float steerAmount = steer * steerSpeed * Time.deltaTime;
+        transform.Translate(0, move * moveSpeed * Time.deltaTime, 0);
+        transform.Rotate(0, 0, steerAmount);
 
-
-        float steerAmount = steer * steerSpeed * moveSpeed * Time.deltaTime;
-        transform.Translate(0, moveAmount, 0);
-        if (moveSpeed > minSpeed)
-        {
-            transform.Rotate(0, 0, steerAmount);
-        }
 
     }
 }
