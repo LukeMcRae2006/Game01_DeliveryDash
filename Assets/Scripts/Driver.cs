@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,6 +8,7 @@ public class Driver : MonoBehaviour
     [SerializeField] float moveSpeed = 0f;
     [SerializeField] float regularSpeed = 5f;
     [SerializeField] float boostSpeed = 10f;
+    [SerializeField] private GameObject textUI;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -21,6 +23,7 @@ public class Driver : MonoBehaviour
         if (collision.CompareTag("Boost"))
         {
             moveSpeed = boostSpeed;
+            textUI.SetActive(true);
             Destroy(collision.gameObject);
         }
     }
@@ -28,6 +31,7 @@ public class Driver : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collision)
     {
         moveSpeed = regularSpeed;
+        textUI.SetActive(false);
     }
     void Update()
     {
