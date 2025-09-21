@@ -30,8 +30,12 @@ public class Driver : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        moveSpeed = regularSpeed;
-        textUI.SetActive(false);
+        if (collision.collider.CompareTag("WorldCollision"))
+        {
+            moveSpeed = regularSpeed;
+            textUI.SetActive(false);
+        }
+
     }
     void Update()
     {
